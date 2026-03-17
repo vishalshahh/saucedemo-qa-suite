@@ -25,4 +25,3 @@ mvn test
 
 ## Test Results
 ![Tests Passing](Demo.png)
-```
