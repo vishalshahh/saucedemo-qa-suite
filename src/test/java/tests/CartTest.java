@@ -1,6 +1,8 @@
 package tests;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.CartPage;
@@ -8,6 +10,8 @@ import pages.CheckoutPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 import utils.DriverManager;
+
+import java.time.Duration;
 
 public class CartTest {
     WebDriver driver;
@@ -82,6 +86,10 @@ public class CartTest {
         String targetItem = "Sauce Labs Backpack";
         inventoryPage.addItemToCartByName(targetItem);
         inventoryPage.goToCart();
+
+        // Add explicit wait for cart page to fully load
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlContains("cart"));
 
         Assert.assertTrue(
                 cartPage.isOnCartPage(),

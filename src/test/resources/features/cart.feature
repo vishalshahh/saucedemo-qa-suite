@@ -25,15 +25,3 @@ Feature: Shopping Cart Functionality
     And I fill checkout info "Vishal" "Shah" "201001"
     And I complete the order
     Then I should see order success message
-
-
-
-## 📊 Final Test Count for Resume
-
-| Suite | Tests | What It Covers |
-|---|---|---|
-| LoginTest | 3 tests | Valid login, invalid login, locked user |
-| CartTest | 8 tests | Inventory, cart, checkout, full E2E flow |
-| UserApiTest | 4 tests | GET, POST, DELETE, 404 handling |
-| Cucumber | 2 feature files | BDD scenarios for login + cart |
-| **Total** | **15 tests** | **Full coverage** |

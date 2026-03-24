@@ -3,6 +3,10 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.List;
 
 public class CartPage {
@@ -12,7 +16,7 @@ public class CartPage {
     By cartItems = By.className("cart_item");
     By cartItemNames = By.className("inventory_item_name");
     By cartItemPrices = By.className("inventory_item_price");
-    By removeButtons = By.cssSelector(".cart_button");
+    By removeButtons = By.cssSelector("[data-test^='remove']");
     By checkoutButton = By.id("checkout");
     By continueShoppingButton = By.id("continue-shopping");
     By cartQuantity = By.className("cart_quantity");
@@ -22,7 +26,8 @@ public class CartPage {
     }
 
     public boolean isOnCartPage() {
-        return driver.getCurrentUrl().contains("cart");
+        return driver.getCurrentUrl().contains("cart") ||
+                driver.getCurrentUrl().contains("basket");
     }
 
     public int getCartItemCount() {
@@ -36,15 +41,20 @@ public class CartPage {
                 .toList();
     }
 
+    public void clickCheckout() {
+        dismissAnyDialog(); // dismiss password popup if present
+        driver.findElement(checkoutButton).click();
+    }
+
     public void removeFirstItem() {
-        List<WebElement> buttons = driver.findElements(removeButtons);
+        dismissAnyDialog(); // dismiss password popup if present
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        List<WebElement> buttons = wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(removeButtons)
+        );
         if (!buttons.isEmpty()) {
             buttons.get(0).click();
         }
-    }
-
-    public void clickCheckout() {
-        driver.findElement(checkoutButton).click();
     }
 
     public void clickContinueShopping() {
@@ -54,4 +64,15 @@ public class CartPage {
     public boolean isItemInCart(String itemName) {
         return getCartItemNames().contains(itemName);
     }
+
+
+    private void dismissAnyDialog() {
+        try {
+            org.openqa.selenium.Alert alert = driver.switchTo().alert();
+            alert.dismiss();
+        } catch (Exception e) {
+            // No alert present — continue normally
+        }
+    }
+
 }

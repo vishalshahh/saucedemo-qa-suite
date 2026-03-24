@@ -20,4 +20,10 @@
         </classes>
     </test>
 
+    <test name="Cucumber BDD Tests">
+        <classes>
+            <class name="runners.TestRunner"/>
+        </classes>
+    </test>
+
 </suite>

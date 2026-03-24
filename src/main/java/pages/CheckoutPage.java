@@ -10,16 +10,15 @@ public class CheckoutPage {
     WebDriver driver;
     WebDriverWait wait;
 
-    By firstNameField = By.id("first-name");
-    By lastNameField  = By.id("last-name");
-    By postalCodeField = By.id("postal-code");
-    By continueButton  = By.id("continue");
-    By finishButton    = By.id("finish");
-    By successMessage  = By.className("complete-header");
+    By firstNameField  = By.cssSelector("[data-test='firstName']");
+    By lastNameField   = By.cssSelector("[data-test='lastName']");
+    By postalCodeField = By.cssSelector("[data-test='postalCode']");
+    By continueButton  = By.cssSelector("[data-test='continue']");
+    By finishButton    = By.cssSelector("[data-test='finish']");
     By errorMessage    = By.cssSelector("[data-test='error']");
+    By summaryTotal    = By.cssSelector("[data-test='total-label']");
+    By successMessage  = By.className("complete-header");
 
-    // ✅ Fixed locator — works on current SauceDemo
-    By summaryTotal = By.cssSelector("[data-test='total-label']");
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
@@ -29,12 +28,16 @@ public class CheckoutPage {
     public void enterCheckoutInfo(String firstName,
                                   String lastName,
                                   String postalCode) {
+        wait.until(ExpectedConditions
+                .visibilityOfElementLocated(firstNameField));
         driver.findElement(firstNameField).sendKeys(firstName);
         driver.findElement(lastNameField).sendKeys(lastName);
         driver.findElement(postalCodeField).sendKeys(postalCode);
     }
 
     public void clickContinue() {
+        wait.until(ExpectedConditions
+                .elementToBeClickable(continueButton));
         driver.findElement(continueButton).click();
     }
 
